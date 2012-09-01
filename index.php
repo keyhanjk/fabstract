@@ -1,8 +1,3 @@
-<?php
-
-require_once "lib/FAbstract.php";
-
-?>
 <!doctype html>
 <html>
   <head>
@@ -34,9 +29,15 @@ require_once "lib/FAbstract.php";
       <li>
         <ul>
           <li>connect ($host, $name, $user = 'root', $password = '', $default = true)</li>
+          <li>install ($connection = null)</li>
+          <li>uninstall ($connection = nullz)</li>
           <li>loaded ()</li>
           <li>query ($query, $connection = null)</li>
           <li>load ($connection = null)</li>
+          <li>check ($connection = null)</li>
+          <li>count ($connection)</li>
+          <li>first ($connection, $limit = null, $delimiters = null, $order = null)</li>
+          <li>find ($connection, $limit = null, $delimiters = null, $order = null)</li>
         </ul>
       </li>
     </ul>

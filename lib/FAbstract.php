@@ -20,13 +20,13 @@
 
     // properties:
     // internal configuration for the object goes as a default value
-    // on a public property because fabstract is supposed to be that flexible
-    // we prefix them with fabstract_ to avoid name collision
+    // on a public property to allways allow external access
+    // we prefix them with ___ to avoid name collision
 
 
     // functions:
-    // functions are not prefixed with fabstract_ because we don't want
-    // you to type that much. any name collision should be fixed manually.
+    // functions are not prefixed with ___ because we don't want
+    // to type that much. any name collision should be fixed manually.
 
 
     // useful shortcuts for the output method       

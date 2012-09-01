@@ -17,7 +17,7 @@
     public $___created = null;
     public $___updated = null;
     
-
+    private $___loaded = null;
     
 
     // $host is the hostname for the database
@@ -62,7 +62,7 @@
     
     // creates the table to store the class
     // if you pass a $connection, it'll use that one, else it'll use self::___connection
-    // this means that you should call $this->connect () first
+    // this means we should call $this->connect () first
     public function install ($connection = null)
       {
       $connection = $this->check ($connection);
@@ -114,7 +114,7 @@
 
 
 
-
+    // drops the database table
     public function uninstall ($connection = null)
       {
       $connection = $this->check ($connection);
@@ -132,8 +132,8 @@
 
 
 
-
-
+  
+    // inserts/updates the row on the table
     public function save ($connection = null)
       {
       $connection = $this->check ($connection);
@@ -226,17 +226,14 @@
 
 
 
-
+    // true if object has been loaded from the database 
     public function loaded ()
       {
-      if (!empty ($this->{$this->___key}))
-        return true;
-
-      return false;
+      return $this->___loaded;
       }
 
 
-
+    // executes the sql query on the database
     public function query ($query, $connection = null)
       {
       if (empty ($connection))
@@ -253,6 +250,11 @@
       }
 
 
+
+    // checks for
+    // $connection if its passed, if not, it uses self::$___connection, which means that
+    // we should call $this->connect () first
+    // checks that the schema looks ok, with fields and table set
     private function check ($connection = null)
       {
       if (empty ($connection) && empty (self::$___connection))
@@ -297,10 +299,13 @@
 
         for ($i = 0; $i < count ($this->___fields); $i++)
           $this->{$this->___fields [$i]} = $row [$this->___fields [$i]];
-
+        
+        $this->___loaded = true;
         }
 
-      return $ok;
+      
+
+      return $this->___loaded;
       }
 
 
@@ -318,7 +323,7 @@
 
 
 
-
+    // does a simple count on the table
     public function count ($connection = null)
       {
       $connection = $this->check ($connection);
@@ -400,7 +405,7 @@
 
 
 
-
+     // finds elements on the table with a likeness to this objects current set values
      public function find ($connection, $limit = null, $delimiters = null, $order = null)
       {
       $connection = $this->check ($connection);
