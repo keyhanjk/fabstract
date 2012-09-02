@@ -1,6 +1,8 @@
 fabstract is a collection of useful php abstract classes
 it's not a framework! just some handy classes.
 
+for examples on how to use these classes take a look at the test classes
+
 @author: Nuno Simaria <nsimaria@gmail.com>
 
 SiMA - Software is Moderna Art
