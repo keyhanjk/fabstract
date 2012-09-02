@@ -406,7 +406,7 @@
 
 
      // finds elements on the table with a likeness to this objects current set values
-     public function find ($connection, $limit = null, $delimiters = null, $order = null)
+     public function find ($connection = null, $limit = null, $delimiters = null, $order = null)
       {
       $connection = $this->check ($connection);
     

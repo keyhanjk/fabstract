@@ -4,15 +4,30 @@ require_once "lib/FAbstract.php";
 
 class FAbstractTest extends FAbstract
 {
+  public $this_variable = 'has a value';
+
 
   public function test ()
     {
     $this->testOutput ();
+    $this->testParam ();
+    $this->testJson ();
     }
 
    
+  public function testParam ()
+    {
+    $this->log ($this->param ('PWD', null, 'server'));
+    }
 
-   public function testOutput ()
+  public function testJson ()
+    {
+    $this->log ($this->json ());
+    }
+    
+
+
+  public function testOutput ()
     {
     $this->output ('testing ouput');
     $this->eco ('testing eco');

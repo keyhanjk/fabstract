@@ -91,13 +91,16 @@
     // if $header we also send the json header
     // you can also hide some props
     // TODO: hide the props!
-    public function json ($json, $hide = null, $header = true)
+    public function json ($json = null, $hide = null, $header = true)
       {
-      if ($header)
+      if (empty ($json))
+        $json = $this;
+
+      if ($header && !headers_sent ())
         header('Content-type: application/json');
 
       if (empty ($hide))
-        $this->eco (json_encode ($json));
+        return json_encode ($json);
       else
         $this->error ('hide param is not implemented!!');
 
