@@ -5,10 +5,14 @@
 
 require_once "test/all.php";
 
-$fabstract = new FAbstractTest ();
-$fabstract->test ();
 
-$fstorable = new FSTorableTest ();
-$fstorable->test ();
+//$fabstract = new FAbstractTest ();
+//$fabstract->test ();
+
+$fcurl = new FCurlTest ();
+$fcurl->test ();
+
+//$fstorable = new FSTorableTest ();
+//$fstorable->test ();
 
 

@@ -25,6 +25,12 @@
           <li>output ($message, $mode = null, $label = null)</li>
        </ul>
       </li>
+      <li>FCurl</li>
+      <li>
+        <ul>
+          <li>request ($uri)</li>
+        </ul>
+      </li>
       <li>FStorable</li>
       <li>
         <ul>
