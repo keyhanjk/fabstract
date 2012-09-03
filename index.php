@@ -28,7 +28,12 @@
       <li>FCurl</li>
       <li>
         <ul>
-          <li>request ($uri)</li>
+          <li>home ($home = null)</li>
+          <li>login ($username, password)</li>
+          <li>data ($name, $value = null, $encode = true)</li>
+          <li>binary ($value = true)</li>
+          <li>info ()</li>
+          <li>request ($uri, $mode = 'string', $method = 'get', $reset = true)</li>
         </ul>
       </li>
       <li>FStorable</li>
