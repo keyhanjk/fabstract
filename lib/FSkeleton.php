@@ -1,5 +1,6 @@
 <?php
 
+  require_once dirname (__FILE__) . "/FAbstract.php";
 
   // abstract class for html page structure shortcuts
   abstract class FSkeleton extends FAbstract
@@ -15,6 +16,9 @@
     public $___styles = 'http://localhost/styles';
     public $___images = 'http://localhost/images';
     public $___bones = '/var/www/bones';
+
+
+    protected $___sufixes = array ('.js', '.php', '.css', '.png', '.jpg');
 
 
     public function www ($url = '')
@@ -65,7 +69,9 @@
 
     public function bone ($path)
       {
-      return $this->___bones . $path;
+      $extension = $this->___extension ($path);
+     
+      return $this->___bones . $path . (($extension === null) ? '.php' : '');
       }
 
 
@@ -81,6 +87,21 @@
        }
 
 
+
+
+    protected function ___extension ($path)
+       {
+       preg_match("/\.([^\.]+)$/", $path, $matches);    
+       
+       if (isset ($matches [1]))
+         return $matches[1];
+
+       return null;
+       }
+
+    protected function ___sufixable ($path)
+       {
+       }
 
 
     }

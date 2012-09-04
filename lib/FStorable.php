@@ -1,6 +1,7 @@
 <?php
 
-
+  require_once dirname (__FILE__) . "/FAbstract.php";
+  
   // fstorable is an abstraction class for simple mysql querying
   // it does not support more than simple single table queries
   // it may, one day, support joins, but complete sql implementation

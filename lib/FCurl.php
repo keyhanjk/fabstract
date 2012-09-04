@@ -1,8 +1,7 @@
 <?php
 
 
-  require_once 'lib/FAbstract.php';
-
+  require_once dirname (__FILE__) . "/FAbstract.php";
 
 
   abstract class FCurl extends FAbstract
