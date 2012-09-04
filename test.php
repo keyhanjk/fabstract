@@ -1,18 +1,21 @@
 <?php
 
-      ini_set ('log_errors', true);
-      ini_set ('error_log', '/var/log/nginx/error.log');
+ini_set ('log_errors', true);
+ini_set ('error_log', '/var/log/nginx/error.log');
 
 require_once "test/all.php";
 
 
-//$fabstract = new FAbstractTest ();
-//$fabstract->test ();
+$fabstract = new FAbstractTest ();
+$fabstract->test ();
 
 $fcurl = new FCurlTest ();
 $fcurl->test ();
 
-//$fstorable = new FSTorableTest ();
-//$fstorable->test ();
+$fskeleton = new FSkeletonTest ();
+$fskeleton->test ();
+
+$fstorable = new FSTorableTest ();
+$fstorable->test ();
 
 
