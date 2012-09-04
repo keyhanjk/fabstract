@@ -20,6 +20,8 @@
     // home path. if this is set, it'll be appended to the request uri
     public $___home = null;
 
+    // cached files ttl in seconds
+    public $___ttl = 600; 
 
 
     // making sure there's always a curl object instantiated
@@ -114,6 +116,39 @@
 
 
 
+    protected function ___cachePath ($uri)
+      {
+      return sys_get_temp_dir () . '/' . md5 ($uri);
+      }
+
+
+
+    public function cached ($uri)
+      {
+      $path = $this->___cachePath ($uri);
+
+      $time = filemtime ($path);
+      $now = time ();
+   
+      if (!$time || (($this->___ttl !== null) && ($time + $this->___ttl) < $now))
+        {
+        return null;
+        }
+
+      return file_get_contents ($path);
+      }
+
+
+
+    public function cache ($uri, $content)
+      {
+      $path = $this->___cachePath ($uri);
+
+      file_put_contents ($path, $content);
+      }
+
+
+
     
     // $requests content at $uri using $method
     // $method currently supports only 'get' or 'post'
@@ -124,49 +159,64 @@
     // if $mode is 'object' tries to instantiate a model (not implemented)
     // if $mode is 'auto' it tries to infer a compatible mode (not implmented)
     // if $reset the ___data property is emptied after the request
-    public function request ($uri, $mode = 'string', $method = 'get', $reset = true)
+    public function request ($uri, $mode = 'string', $method = 'get', $cache = true, $reset = true)
       {
       if (empty ($uri) || !is_string ($uri))
         $this->error ('no url defined for request!');
 
-      if ($this->___curl === null)
-        $this->___curl = curl_init ();
-      
-      $query = '';
+      $response = null;
 
-    
-      if (!empty ($this->___data))
+      if ($cache)
         {
-        foreach ($this->___data as $parameter)
-          {
-          if ($query !== '')
-            $query .= "&";
-  
-          if ($parameter->encode)
-            $query .= urlencode ($parameter->name) . "=" . urlencode ($parameter->value);
-          else
-            $query .= $parameter->name . "=" . $parameter->value;
-          }
+        $cached = $this->cached ($uri);
+
+        if (!empty ($cached))
+          $response = $cached;
         }
 
-      // hello fellow coder! 
-      // this is the url of the request. 
-      // you might want to debug it if you're having any problems. 
-      $url = (!empty ($this->___home) && is_string ($this->___home) ? $this->___home : '') . $uri . (($method === 'get') && ($query !== '') ? '?' . $query : '') ;        
+      if (empty ($response))
+        {
+        if ($this->___curl === null)
+          $this->___curl = curl_init ();
+        
+        $query = '';
+  
+        if (!empty ($this->___data))
+          {
+          foreach ($this->___data as $parameter)
+            {
+            if ($query !== '')
+              $query .= "&";
+    
+            if ($parameter->encode)
+              $query .= urlencode ($parameter->name) . "=" . urlencode ($parameter->value);
+            else
+              $query .= $parameter->name . "=" . $parameter->value;
+            }
+          }
+  
+        // hello fellow coder! 
+        // this is the url of the request. 
+        // you might want to debug it if you're having any problems. 
+        $url = (!empty ($this->___home) && is_string ($this->___home) ? $this->___home : '') . $uri . (($method === 'get') && ($query !== '') ? '?' . $query : '') ;        
+  
+        curl_setopt($this->___curl, CURLOPT_RETURNTRANSFER,  true);
+        curl_setopt($this->___curl, CURLOPT_URL,  $url);
+  
+        if ($method === 'post')
+          curl_setopt($this->___curl, CURLOPT_POSTFIELDS,  $query);
+  
+        curl_setopt($this->___curl, CURLOPT_HEADER, 0);
+        curl_setopt($this->___curl, CURLOPT_POST, ($method === 'post') ? 1 : 0);
+        
+        if ($this->___binary && ($method === 'post'))
+          curl_setopt($this->___curl, CURLOPT_BINARYTRANSFER, 1);
+  
+        $response = curl_exec($this->___curl);
+        }
 
-      curl_setopt($this->___curl, CURLOPT_RETURNTRANSFER,  true);
-      curl_setopt($this->___curl, CURLOPT_URL,  $url);
-
-      if ($method === 'post')
-        curl_setopt($this->___curl, CURLOPT_POSTFIELDS,  $query);
-
-      curl_setopt($this->___curl, CURLOPT_HEADER, 0);
-      curl_setopt($this->___curl, CURLOPT_POST, ($method === 'post') ? 1 : 0);
-      
-      if ($this->___binary && ($method === 'post'))
-        curl_setopt($this->___curl, CURLOPT_BINARYTRANSFER, 1);
-
-      $response = curl_exec($this->___curl);
+      if (!empty ($response) && $cache)
+        $this->cache ($uri, $response);
 
       switch ($mode)
         {
