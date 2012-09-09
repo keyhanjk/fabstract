@@ -10,15 +10,10 @@
     public function test ()
       {
       $this->testOutput ();
-      $this->testParam ();
       $this->testJson ();
       }
   
      
-    public function testParam ()
-      {
-      $this->log ($this->param ('PWD', null, 'server'));
-      }
   
     public function testJson ()
       {

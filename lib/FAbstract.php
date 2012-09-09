@@ -50,42 +50,6 @@
 
 
 
-    // gets a $name param from a global arrays
-    // $default is the value returned when no param is found
-    // $method can be 'server', 'get', etc... to go for the $_METHOD collection
-    // if $method === null we go for the $_REQUEST
-    public function param ($name, $default = null, $method = null)
-      {
-      $collection = null;
-
-      if ($method === null)
-        $collection = $_REQUEST;
-      else
-        {
-        switch ($method)
-          {
-          case 'server' : $collection = $_SERVER; break;
-          case 'get' : $collection = $_GET; break;
-          case 'post' : $collection = $_POST; break;
-          case 'files' : $collection = $_FILES; break;
-          case 'cookie' : $collection = $_COOKIE; break;
-          case 'session' : $collection = $_SESSION; break;
-          case 'request' : $collection = $_REQUEST; break;
-          case 'env' : $collection = $_ENV; break;
-          }
-        }
-
-      if ($collection === null)
-        $this->error ('invalid param call. method name is probably unknown.');
-
-      if (isset ($collection [$name]))
-        return $collection [$name];
-
-      return $default;
-      }    
-
-
-
 
     // outputs $json param as json
     // if $header we also send the json header

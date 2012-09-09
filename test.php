@@ -12,8 +12,8 @@ $fabstract->test ();
 $fcurl = new FCurlTest ();
 $fcurl->test ();
 
-$fskeleton = new FSkeletonTest ();
-$fskeleton->test ();
+$fsite = new FSiteTest ();
+$fsite->test ();
 
 $fstorable = new FSTorableTest ();
 $fstorable->test ();

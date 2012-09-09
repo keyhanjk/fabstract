@@ -1,8 +1,8 @@
 <?php
 
-  require_once ("lib/FSkeleton.php");
+  require_once ("lib/FSite.php");
 
-  class FSkeletonTest extends FSkeleton
+  class FSiteTest extends FSite
     {
     public $___www = 'http://fabstract/';
     public $___scripts = 'http://fabstract/scripts/';
@@ -13,12 +13,19 @@
 
     public function test ()
       {
+      $this->testParam ();
       $this->testWww ();
       $this->testA ();
       $this->testScript ();
       $this->testStyle ();
       $this->testImage ();
       $this->testBone ();
+      }
+
+
+    public function testParam ()
+      {
+      $this->log ($this->param ('PWD', null, 'server'));
       }
 
 
