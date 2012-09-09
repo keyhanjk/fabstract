@@ -115,6 +115,22 @@
 
 
 
+    public function mail ($from, $to, $subject, $body)
+      {
+      $headers = '';
+      
+      $headers .= 'From: ' . $mail . "\r\n";
+      $headers .= 'Reply-To: ' . $mail . "\r\n";
+      $headers .= 'X-Mailer: PHP/' . phpversion();
+
+      $ok = mail($to, $subject, $body, $headers);
+
+      if (!$ok)
+        $this->error ('Failed to send your email');
+
+      return true;
+      }
+
 
 
  
