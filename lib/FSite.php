@@ -23,7 +23,13 @@
 
     public function www ($url = '')
       {
-      return $this->___www . $url;
+      return $this->___www;
+      }
+
+
+    public function url ($path)
+      {
+      return $this->___www . $path;
       }
 
 
