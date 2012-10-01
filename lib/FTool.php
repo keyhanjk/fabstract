@@ -2,7 +2,7 @@
 
 
   // some static useful functions
-  abstract FTool extends FAbstract
+  abstract class FTool extends FAbstract
     {
 
 

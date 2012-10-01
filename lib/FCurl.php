@@ -159,12 +159,13 @@
     // if $mode is 'object' tries to instantiate a model (not implemented)
     // if $mode is 'auto' it tries to infer a compatible mode (not implmented)
     // if $reset the ___data property is emptied after the request
-    public function request ($uri, $mode = 'string', $method = 'get', $cache = true, $reset = true)
+    public function request ($uri, $mode = 'string', $method = 'get', $cache = true, $reset = true, $force = false)
       {
       if (empty ($uri) || !is_string ($uri))
         $this->error ('no url defined for request!');
 
       $response = null;
+
 
       if ($cache)
         {
@@ -215,7 +216,7 @@
         $response = curl_exec($this->___curl);
         }
 
-      if (!empty ($response) && $cache)
+      if (!empty ($response) && ($cache || $force))
         $this->cache ($uri, $response);
 
       switch ($mode)

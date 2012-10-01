@@ -73,7 +73,6 @@
 
 
 
-
     // if $message is_object or is_array, we print_r, else we output plainly
     // if $mode === 'echo' we echo
     // if $mode === 'br' we echo with a <br/> after the message
