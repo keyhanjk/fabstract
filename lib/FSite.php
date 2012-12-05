@@ -125,11 +125,11 @@
       {
       $headers = '';
       
-      $headers .= 'From: ' . $mail . "\r\n";
-      $headers .= 'Reply-To: ' . $mail . "\r\n";
+      $headers .= 'From: ' . $from . "\r\n";
+      $headers .= 'Reply-To: ' . $from . "\r\n";
       $headers .= 'X-Mailer: PHP/' . phpversion();
 
-      $ok = mail($to, $subject, $body, $headers);
+      $ok = mail($to, $subject, $from . ':' . $body, $headers);
 
       if (!$ok)
         $this->error ('Failed to send your email');

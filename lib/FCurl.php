@@ -4,7 +4,7 @@
   require_once dirname (__FILE__) . "/FAbstract.php";
 
 
-  abstract class FCurl extends FAbstract
+  class FCurl extends FAbstract
     {
     
     // stores the curl resource. you can populate it manually if you want to
@@ -96,9 +96,12 @@
     // binary flag is set to false on startup
     // $value is set to true by default so that you can call $this->binary ()
     // to activate binary mode
-    public function binary ($value = true)
+    public function binary ($value = null)
       {
-      $this->___binary = $value;
+      if (!empty ($value))
+        $this->___binary = $value;
+
+      return $this->___binary;
       }
 
 
@@ -206,12 +209,18 @@
   
         if ($method === 'post')
           curl_setopt($this->___curl, CURLOPT_POSTFIELDS,  $query);
+        else if ($method !== 'get')
+          curl_setopt($this->___curl, CURLOPT_CUSTOMREQUEST, strtoupper ($method)); // -X
   
         curl_setopt($this->___curl, CURLOPT_HEADER, 0);
         curl_setopt($this->___curl, CURLOPT_POST, ($method === 'post') ? 1 : 0);
         
-        if ($this->___binary && ($method === 'post'))
+        if (!empty ($this->___binary) && ($method !== 'get'))
+          {
+          // binary overrides postfields
+          curl_setopt($this->___curl, CURLOPT_POSTFIELDS,  $this->___binary);
           curl_setopt($this->___curl, CURLOPT_BINARYTRANSFER, 1);
+          }
   
         $response = curl_exec($this->___curl);
         }
@@ -229,10 +238,6 @@
 
       return $response;
       }
-
-
-
-
 
 
     // protected methods. these you might want to extend but shouldn't be necessary
