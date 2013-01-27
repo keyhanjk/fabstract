@@ -60,6 +60,9 @@
       if (empty ($json))
         $json = $this;
 
+      if ($json instanceof FAbstract)
+        $json = $json->asJson ();
+
       if ($header && !headers_sent ())
         header('Content-type: application/json');
 
@@ -70,6 +73,11 @@
 
       }
 
+
+    public function asJson ()
+      {
+      return $this;
+      }
 
 
 

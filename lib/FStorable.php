@@ -214,7 +214,7 @@
         $result = $this->query ($query);
         }
     
-      return;  
+      return !empty ($this->{$this->___key});  
  
       }
 

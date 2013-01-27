@@ -16,10 +16,21 @@
     public $___styles = 'http://localhost/styles';
     public $___images = 'http://localhost/images';
     public $___bones = '/var/www/bones';
+    public $___handles = '/var/www/handles';
+    public $___section = null;
+    
 
 
     protected $___sufixes = array ('.js', '.php', '.css', '.png', '.jpg');
 
+
+    public function session ($name = null)
+      {
+      if (!empty ($name))
+        session_name ($name);
+
+      session_start ();
+      }
 
     public function www ($url = '')
       {
@@ -79,6 +90,13 @@
      
       return $this->___bones . $path . (($extension === null) ? '.php' : '');
       }
+  
+    public function handle ($path)
+      {
+      $extension = $this->___extension ($path);
+
+      return $this->___handles . $path . (($extension === null) ? '.php' : '');
+      }
 
 
 
@@ -129,7 +147,9 @@
       $headers .= 'Reply-To: ' . $from . "\r\n";
       $headers .= 'X-Mailer: PHP/' . phpversion();
 
-      $ok = mail($to, $subject, $from . ':' . $body, $headers);
+      $this->log ("$to, $subject, $body, $headers");
+      $ok = mail($to, $subject, $body, $headers);
+      
 
       if (!$ok)
         $this->error ('Failed to send your email');
@@ -137,6 +157,24 @@
       return true;
       }
 
+
+
+    // if $site->section returns current top level section
+    // if $site->section (true) returns array with section tree
+    // if $site->section ('produts', 'product', 'detail') defines section and subsections
+    public function section ()
+      {
+      $args = func_get_args ();
+
+      if (empty ($args) && !empty ($this->___section) && is_array ($this->___section))
+        return $this->___section [0];
+      
+      if (is_array ($args) && (count ($args) == 1) && ($args [0] === true))
+        return $this->___section;
+        
+      if (is_array ($args))
+        $this->___section = $args;
+      }
 
 
  
@@ -163,6 +201,8 @@
     protected function ___sufixable ($path)
        {
        }
+
+
 
 
     }
