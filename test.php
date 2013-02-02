@@ -5,7 +5,7 @@ ini_set ('error_log', '/var/log/nginx/error.log');
 
 require_once "test/all.php";
 
-
+/*
 $fabstract = new FAbstractTest ();
 $fabstract->test ();
 
@@ -17,5 +17,6 @@ $fsite->test ();
 
 $fstorable = new FSTorableTest ();
 $fstorable->test ();
-
-
+*/
+$fmongo = new FMongoTest ();
+$fmongo->test ();

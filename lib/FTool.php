@@ -20,4 +20,9 @@
 
       return null;
       }
+
+    public static function uuid ($prefix = '', $more = true)
+    {
+        return uniqid ($prefix, $more);       
     }
+}
