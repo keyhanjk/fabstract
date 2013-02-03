@@ -10,9 +10,6 @@
     public $___loaded = false;
   
   
-    public $name = null;
-    public $description = null;
-
     public function prototype ()
     {
         $prototype = array ();
@@ -29,10 +26,16 @@
  
     public function test ()
       {
+      $microtime = microtime (true);
+
       $this->testConnect ();
       $this->testSave ();
-      $this->testLoad ();
-      $this->testLoadAndSave ();
+
+      //$this->testLoad ();
+      //$this->testLoadAndSave ();
+
+
+      $this->log ('done in ' . (microtime (true) - $microtime) . 's.');
       
 /*      try
         {
@@ -71,10 +74,16 @@
 
     public function testSave ()
       {
-      $this->name = 'box';
-      $this->description = 'this is not a box.';
-      $this->origin = array ('address' => 'Schönhauser Allee');
-      $this->save ();
+
+      for ($i = 0; $i < 100; $i++)
+      {
+      $test = new FMongoTest ();
+      $test->name = 'box';
+      $test->description = 'box number ' . $i . '.  ';
+      $test->origin = array ('address' => 'Schönhauser Allee');
+      $test->save ();
+      }
+
       }
 
 
