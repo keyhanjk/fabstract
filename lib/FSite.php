@@ -18,24 +18,104 @@
     public $___bones = '/var/www/bones';
     public $___handles = '/var/www/handles';
     public $___section = null;
-    
+    public $___handler = null;
+    public $___config  = null;
+    public $___conf    = null;
+    public $___env     = null;
 
 
     protected $___sufixes = array ('.js', '.php', '.css', '.png', '.jpg');
 
 
-    public function session ($name = null)
-      {
-      if (!empty ($name))
-        session_name ($name);
 
-      session_start ();
-      }
+
+    public function config ()
+    {
+        if (empty ($this->___conf))
+            $this->error ('no conf file defined for this site');
+
+        if (!file_exists ($this->___conf))
+            $this->error ('your config file does not exist');
+
+        if (empty ($this->___env))
+            $this->error ('no environment defined for this site');
+  
+        if (empty ($this->___config))
+            $this->___config = json_decode (file_get_contents($this->___conf), true);
+
+
+        $this->log (">>>>>>>>>>>>");
+        $this->log ($this->___config);
+
+        if (isset ($this->___config [$this->___env]))
+            $this->___config = $this->___config [$this->___env];
+
+
+        $args = func_get_args();
+
+        $current = $this->___config;
+
+        $this->log ($current);
+
+        foreach ($args as $arg)
+        {
+            if (!empty ($arg) && isset ($current [$arg]))
+                $current = $current [$arg];
+            else
+                return null;
+        }
+
+        return $current;
+    }
+
+
+
+
+
+    public function redirect ($destiny = null)
+    {
+        if (empty ($destiny))
+            $destiny = $this->www ();
+
+        header('Location: ' . $destiny);
+
+        die ();
+    }
+
+    public function userRequired ()
+    {
+        $path = $this->param ('REQUEST_URI', null, 'server');
+
+        if ($path !== '/')
+            return true;
+
+        return false;
+    }
+
+
+
+    public function session ($name = null)
+    {
+        if (!empty ($this->___handler) && class_exists ($this->___handler))
+        {
+            $this->log ('setting ' . $this->___handler . ' as session handler');
+
+            $ok = session_set_save_handler(new $this->___handler ());   
+ 
+            if (!$ok)
+                $this->error ('cannot set session save handler ' . $this->___handler . '.');
+        }
+
+        if (!empty ($name))
+            session_name ($name);
+
+        session_start ();
+    }
 
     public function www ($url = '')
-      {
-      return $this->___www;
-      }
+    {
+        return $this->___www;
+    }
 
 
     public function url ($path)

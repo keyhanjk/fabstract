@@ -220,6 +220,20 @@ abstract class FMongo extends FAbstract
         return $connection;
     }
 
+    
+    public function first ($connection = null)
+    {
+        $result = $this->find ($connection, 1);
+
+        if (empty ($result))
+            return null;
+
+        if (!is_array ($result))
+            return null;
+
+        return $result [0];
+    }
+
     public function find ($connection = null, $number = 10)
     {
         if (empty ($this->___db))
